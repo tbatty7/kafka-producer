@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class RequestBuilder {
 
-    public static AvroHttpRequest createRequest() {
+    public static AvroHttpRequest createTestRequest() {
         ClientIdentifier clientIdentifier = ClientIdentifier.newBuilder()
                 .setHostName("Hostess Twinkies")
                 .setIpAddress("Ip Man lives in China?")
