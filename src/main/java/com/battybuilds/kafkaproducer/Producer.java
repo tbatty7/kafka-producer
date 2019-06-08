@@ -2,6 +2,7 @@ package com.battybuilds.kafkaproducer;
 
 import com.battybuilds.kafkaproducer.avro.model.AvroHttpRequest;
 import com.battybuilds.kafkaproducer.avro.model.ClientIdentifier;
+import com.battybuilds.kafkaproducer.config.AvroSerializer;
 import com.battybuilds.kafkaproducer.config.MyMessageChannels;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.messaging.support.MessageBuilder;
@@ -15,16 +16,18 @@ import java.util.Arrays;
 public class Producer {
 
     private final MyMessageChannels myMessageChannels;
+    private AvroSerializer serializer;
 
-    public Producer(MyMessageChannels myMessageChannels) {
+    public Producer(MyMessageChannels myMessageChannels, AvroSerializer serializer) {
         this.myMessageChannels = myMessageChannels;
+        this.serializer = serializer;
     }
 
     @GetMapping("/")
     public String sendMessage() {
-        Object request = createAvroHttpRequest();
-
-        myMessageChannels.outputChannel().send(MessageBuilder.withPayload("hello").build());
+        AvroHttpRequest request = createAvroHttpRequest();
+        byte[] serializedRequest = serializer.serialize(request);
+        myMessageChannels.outputChannel().send(MessageBuilder.withPayload(serializedRequest).build());
 
         return "message NOT sent!";
     }
