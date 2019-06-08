@@ -7,6 +7,6 @@ public interface MyMessageChannels {
 
     String OUTPUT = "outputChannel";
 
-    @Output(MyMessageChannels.OUTPUT)
+    @Output(OUTPUT)
     MessageChannel outputChannel();
 }
