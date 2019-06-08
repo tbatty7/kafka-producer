@@ -22,9 +22,23 @@ public class Producer {
 
     @GetMapping("/")
     public String sendMessage() {
+        Object request = createAvroHttpRequest();
+
         myMessageChannels.outputChannel().send(MessageBuilder.withPayload("hello").build());
 
         return "message NOT sent!";
     }
-    
+
+    private AvroHttpRequest createAvroHttpRequest() {
+        ClientIdentifier clientIdentifier = ClientIdentifier.newBuilder()
+                .setHostName("hostName")
+                .setIpAddress("127.0.0.1")
+                .build();
+
+        return AvroHttpRequest.newBuilder()
+                .setClientIdentifier(clientIdentifier)
+                .setEmployeeNames(Arrays.asList("Tim", "Jessica", "Mike"))
+                .setRequestTime(10L)
+                .build();
+    }
 }
