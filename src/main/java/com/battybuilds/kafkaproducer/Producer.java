@@ -29,7 +29,7 @@ public class Producer {
         byte[] serializedRequest = serializer.serialize(request);
         myMessageChannels.outputChannel().send(MessageBuilder.withPayload(serializedRequest).build());
 
-        return "message NOT sent!";
+        return "Avro message sent with binary serialization!";
     }
 
     private AvroHttpRequest createAvroHttpRequest() {
